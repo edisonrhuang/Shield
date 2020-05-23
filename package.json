@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/client.js",
-    "start": "node ./src/client.js",
+    "dev": "nodemon ./src/bot.js",
+    "start": "node ./src/bot.js",
     "lavalink": "java -jar Lavalink.jar"
   },
   "author": "",

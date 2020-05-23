@@ -1,0 +1,14 @@
+{
+  "DEFAULT": "#495137",
+  "BLACK": "#000000",
+  "WHITE": "#ffffff",
+  "RED": "#ff0000",
+  "GREEN": "#008000",
+  "BLUE": "#0000ff",
+  "YELLOW": "#ffff00",
+  "ORANGE": "#ff7f00",
+  "PURPLE": "#800080",
+  "MAGENTA": "#ff00ff",
+  "LIGHT_BLUE": "#00ffff",
+  "LIGHT_GREEN": "#00ff00"
+}
