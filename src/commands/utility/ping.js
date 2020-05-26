@@ -4,7 +4,7 @@ const { DEFAULT } = require('../../config/hexColors');
 
 module.exports = class ping extends commandStructure {
     constructor() {
-        super('ping', 'utilities', []);
+        super('ping', 'utility', []);
     }
 
     async run (client, message) {
@@ -13,7 +13,7 @@ module.exports = class ping extends commandStructure {
         const embed = new MessageEmbed()
             .setColor(DEFAULT)
             .setAuthor('Latency', client.user.displayAvatarURL())
-            .setFooter(message.author.tag, message.author.displayAvatarURL())
+            .setFooter(`Command executed by ${message.author.tag}`, message.author.displayAvatarURL())
             .setTimestamp();
 
         return message.channel.send('Pinging').then(msg => {
