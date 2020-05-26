@@ -6,7 +6,7 @@ module.exports = class test extends commandStructure {
         super('test', 'utilities', []);
     }
 
-    async run(client) {
+    async run(client, message) {
         await message.delete();
 
         if (message.author.id === process.env.BOT_OWNER_ID) {

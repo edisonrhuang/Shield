@@ -11,7 +11,7 @@ module.exports = class guildCreate extends eventStructure {
         this.connection = await require('../../database/connection');
 
         try {
-            await this.connection.query(`insert into guilds values ('${guild.id}', '${guild.ownerID}'`);
+            await this.connection.query(`insert into guilds values ('${guild.id}', '${guild.ownerID}')`);
             await this.connection.query(`insert into config (guildID) values ('${guild.id}')`);
         } catch (err) {
             return console.log(err)
