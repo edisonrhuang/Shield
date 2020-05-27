@@ -35,6 +35,7 @@ module.exports = class play extends commandStructure {
 
             try {
                 const response = await message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: ['time']});
+                await message.channel.bulkDelete(1);
 
                 if (response) {
                     const entry = response.first().content;
