@@ -14,6 +14,8 @@ module.exports = class message extends eventStructure {
         const usedPrefix = message.content.slice(0, prefix.length);
 
         if (prefix === usedPrefix) {
+            //Check for correct channel here
+
             const [name, ...args] = message.content.slice(prefix.length).split(/\s+/);
             const command = client.commands.get(name);
             if (command) {

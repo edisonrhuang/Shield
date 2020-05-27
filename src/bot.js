@@ -1,12 +1,21 @@
 require('dotenv').config();
 const { Client } = require('discord.js'); const client = new Client();
-
+const { ErelaClient } = require('erela.js');
 const stateManager = require('./utils/stateManager');
-
 const { commandHandler, eventHandler } = require('./utils/handler');
 client.commands = new Map();
 
-client.login(process.env.BOT_TOKEN).then(r => console.log(`${client.user.tag}: Successfully logged in`));
+(async () => {
+    await client.login(process.env.BOT_TOKEN);
 
-commandHandler(client, '../commands');
+    client.music = new ErelaClient(client, [{
+        host: process.env.HOST,
+        port: process.env.PORT,
+        password: process.env.PASSWORD
+    }]);
+
+    await eventHandler(client.music, '../events/erela');
+    await commandHandler(client, '../commands');
+})();
+
 eventHandler(client, '../events');
