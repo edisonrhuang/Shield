@@ -2,6 +2,7 @@ const eventStructure = require('../../utils/structures/eventStructure');
 const stateManager = require('../../utils/stateManager');
 const { MessageEmbed } = require('discord.js');
 const { YELLOW } = require('../../config/hexColors');
+require('dotenv').config();
 const guildPrefixes = new Map();
 
 module.exports = class message extends eventStructure {
@@ -23,12 +24,15 @@ module.exports = class message extends eventStructure {
                 const musicChannel = message.guild.channels.cache.find(c => c.name === 'music-commands');
                 if (!musicChannel) return missingChannel(client, message, musicChannel);
                 else if (message.channel.id !== musicChannel.id) return incorrectChannel(client, message, musicChannel);
-                else command.run(client, message, args);
+                command.run(client, message, args);
+            } else if (command && command.category === 'owner') {
+                if (message.author.id !== process.env.BOT_OWNER_ID) return;
+                command.run(client, message, args);
             } else if (command) {
                 const botChannel = message.guild.channels.cache.find(c => c.name === 'bot-commands');
                 if (!botChannel) return missingChannel(client, message, botChannel);
                 else if (message.channel.id !== botChannel.id) return incorrectChannel(client, message, botChannel);
-                else command.run(client, message, args)
+                command.run(client, message, args)
             }
         }
     }

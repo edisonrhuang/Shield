@@ -1,6 +1,4 @@
 const commandStructure = require('../../utils/structures/commandStructure');
-const { MessageEmbed } = require('discord.js');
-const { DEFAULT } = require('../../config/hexColors');
 
 module.exports = class ping extends commandStructure {
     constructor() {
@@ -10,16 +8,9 @@ module.exports = class ping extends commandStructure {
     async run (client, message) {
         await message.delete();
 
-        const embed = new MessageEmbed()
-            .setColor(DEFAULT)
-            .setAuthor('Latency', client.user.displayAvatarURL())
-            .setFooter(`Command executed by ${message.author.tag}`, message.author.displayAvatarURL())
-            .setTimestamp();
-
         return message.channel.send('Pinging').then(msg => {
             const ping = msg.createdTimestamp - message.createdTimestamp;
-            embed.setDescription(`**❯ Bot Latency:** \`${ping}\`\n**❯API Latency:** \`${Math.round(client.ping)}\``);
-            return msg.edit(embed);
+            return msg.edit(`🏓 Pong! My ping is \`${ping}\`ms`);
         });
     }
 };

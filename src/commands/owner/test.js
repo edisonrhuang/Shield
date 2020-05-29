@@ -1,16 +1,14 @@
 const commandStructure = require('../../utils/structures/commandStructure');
-require('dotenv').config();
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class test extends commandStructure {
     constructor() {
-        super('test', 'utilities', []);
+        super('test', 'owner', []);
     }
 
     async run(client, message) {
         await message.delete();
 
-        if (message.author.id === process.env.BOT_OWNER_ID) {
-            return console.log('Test Executed');
-        }
+        return console.log('Test Executed');
     }
 };
