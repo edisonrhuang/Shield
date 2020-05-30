@@ -6,7 +6,7 @@ const { commandHandler, eventHandler } = require('./utils/handler');
 client.commands = new Map();
 
 (async () => {
-    await client.login(process.env.DEV_TOKEN);
+    await client.login(process.env.BOT_TOKEN);
 
     client.music = new ErelaClient(client, [{
         host: process.env.HOST,
@@ -18,4 +18,4 @@ client.commands = new Map();
     await commandHandler(client, '../commands');
 })();
 
-eventHandler(client, '../events');
+eventHandler(client, '../events').then();
