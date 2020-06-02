@@ -1,6 +1,5 @@
 const commandStructure = require('../../utils/structures/commandStructure');
-const { MessageEmbed } = require('discord.js');
-const { DEFAULT } = require('../../config/hexColors');
+const { embed } = require('../../utils/functions');
 
 module.exports = class shuffle extends commandStructure {
     constructor() {
@@ -18,13 +17,8 @@ module.exports = class shuffle extends commandStructure {
                 if (channel.id === player.voiceChannel.id) {
                     player.queue.shuffle();
 
-                    const embed = new MessageEmbed()
-                        .setColor(DEFAULT)
-                        .setAuthor('Queue Shuffled', message.author.displayAvatarURL())
-                        .setFooter(message.author.tag, message.author.displayAvatarURL())
-                        .setTimestamp();
-
-                    return message.channel.send(embed);
+                    return message.channel.send(
+                        embed(client, message, 'Queue Shuffled'));
                 }
                 return message.channel.send(`You are not in the same voice channel as ${client.user.tag}`).then(m => m.delete({timeout: 5000}));
             }

@@ -1,5 +1,5 @@
 const commandStructure = require('../../utils/structures/commandStructure');
-const { MessageEmbed } = require('discord.js');
+const { embed, noPermission } = require('../../utils/functions');
 const { YELLOW } = require('../../config/hexColors');
 
 module.exports = class purge extends commandStructure {
@@ -10,18 +10,17 @@ module.exports = class purge extends commandStructure {
     async run (client, message, args) {
         await message.delete();
 
-        if (!message.member.hasPermission(['MANAGE_MESSAGES'])) return message.channel.send('You do not have permission to use this command').then(m => m.delete({timeout:5000}));
+        if (!message.member.hasPermission(['MANAGE_MESSAGES'])) return noPermission(message);
         if (!args[0]) return message.channel.send('Please provide the amount of messages to purge').then(m => m.delete({timeout:5000}));
 
-        return message.channel.bulkDelete(args[0]).then(() => {
-            const embed = new MessageEmbed()
-                .setColor(YELLOW)
-                .setAuthor('Message Purged', client.user.displayAvatarURL())
-                .setDescription(`**${args[0]}** messages deleted`)
-                .setFooter(message.author.tag, message.author.displayAvatarURL())
-                .setTimestamp();
+        const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
 
-            return message.channel.send(embed);
+        return message.channel.bulkDelete(args[0]).then(() => {
+            message.channel.send(`**${args[0]}** messages deleted`).then(m => m.delete({timeout:5000}));
+
+            return logChannel.send(
+                embed(client, message, 'Message Purged', YELLOW)
+                    .setDescription(`**${args[0]}** messages deleted from #${message.channel.name}`));
         }).catch(err => message.channel.send(err));
     }
 };

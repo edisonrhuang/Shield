@@ -1,6 +1,5 @@
 const commandStructure = require('../../utils/structures/commandStructure');
-const { MessageEmbed } = require('discord.js');
-const { DEFAULT } = require('../../config/hexColors');
+const { embed } = require('../../utils/functions');
 
 module.exports = class play extends commandStructure {
     constructor() {
@@ -22,14 +21,10 @@ module.exports = class play extends commandStructure {
             const tracks = searchResults.tracks.slice(0, 10);
             const trackInfo = tracks.map((t, i = 0) => `${++i}) [${t.title}](${t.uri})`).join('\n');
 
-            const embed = new MessageEmbed()
-                .setColor(DEFAULT)
-                .setAuthor('Song Selection', client.user.displayAvatarURL())
-                .setDescription(trackInfo)
-                .setFooter('You have 10 seconds to make a selection', message.author.displayAvatarURL())
-                .setTimestamp();
-
-            message.channel.send(embed).then(m => m.delete({timeout: 10000}));
+            message.channel.send(
+                embed(client, message, 'Song Selection')
+                    .setDescription(trackInfo)
+                    .setFooter('You have 10 seconds to make a selection', message.author.displayAvatarURL())).then(m => m.delete({timeout:5000}))
 
             const filter = m => (message.author.id === m.author.id) && (m.content >= 1 && m.content <= tracks.length);
 

@@ -1,6 +1,5 @@
 const commandStructure = require('../../utils/structures/commandStructure');
-const { MessageEmbed } = require('discord.js');
-const { DEFAULT } = require('../../config/hexColors');
+const { embed } = require('../../utils/functions');
 
 module.exports = class skip extends commandStructure {
     constructor() {
@@ -27,14 +26,10 @@ module.exports = class skip extends commandStructure {
             } else {
                 const votesRequired = Math.ceil(members.size * .51);
 
-                const embed = new MessageEmbed()
-                    .setColor(DEFAULT)
-                    .setAuthor('Skip Vote', client.user.displayAvatarURL())
-                    .setDescription(`Total votes needed: ${votesRequired}`)
-                    .setFooter(message.author.tag, message.author.displayAvatarURL())
-                    .setTimestamp();
+                const msg = await message.channel.send(
+                    embed(client, message, 'Skip Vote')
+                        .setDescription(`Total votes needed: ${votesRequired}`));
 
-                const msg = await message.channel.send(embed);
                 await msg.react('✅');
 
                 const filter = (reaction, user) => {

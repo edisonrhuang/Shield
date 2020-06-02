@@ -1,6 +1,5 @@
 const commandStructure = require('../../utils/structures/commandStructure');
-const { MessageEmbed } = require('discord.js');
-const { DEFAULT } = require('../../config/hexColors');
+const { embed } = require('../../utils/functions');
 
 module.exports = class leave extends commandStructure {
     constructor() {
@@ -20,14 +19,9 @@ module.exports = class leave extends commandStructure {
             if (player.voiceChannel.id === channel.id) {
                 client.music.players.destroy(id);
 
-                const embed = new MessageEmbed()
-                    .setColor(DEFAULT)
-                    .setAuthor(client.user.tag, client.user.displayAvatarURL())
-                    .setDescription(`Voice Channel Left: ${channel}`)
-                    .setFooter(message.author.tag, message.author.displayAvatarURL())
-                    .setTimestamp();
-
-                return message.channel.send(embed);
+                return message.channel.send(
+                    embed(client, message)
+                        .setDescription(`Voice Channel Left: ${channel}`));
             }
             return message.channel.send(`You are not in the same voice channel as ${client.user.tag}`).then(m => m.delete({timeout: 5000}));
         }

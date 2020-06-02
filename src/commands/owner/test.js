@@ -1,5 +1,4 @@
 const commandStructure = require('../../utils/structures/commandStructure');
-const { MessageEmbed } = require('discord.js');
 
 module.exports = class test extends commandStructure {
     constructor() {

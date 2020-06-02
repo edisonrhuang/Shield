@@ -1,6 +1,5 @@
 const commandStructure = require('../../utils/structures/commandStructure');
-const { MessageEmbed } = require('discord.js');
-const { DEFAULT } = require('../../config/hexColors');
+const { embed } = require('../../utils/functions');
 
 module.exports = class queue extends commandStructure {
     constructor() {
@@ -15,16 +14,11 @@ module.exports = class queue extends commandStructure {
             const songs = player.queue.slice(1, 10);
             const songInfo = songs.map((s, i = 0) => `${++i}) [${s.title}](${s.uri})`).join('\n');
 
-            const embed = new MessageEmbed()
-                .setColor(DEFAULT)
-                .setAuthor('Song Queue', client.user.displayAvatarURL())
-                .setDescription(`Current Song: [${player.queue[0].title}](${player.queue[0].uri})
+            return message.channel.send(
+                embed(client, message, 'Song Queue')
+                    .setDescription(`Current Song: [${player.queue[0].title}](${player.queue[0].uri})
                 
-                ${songInfo}`)
-                .setFooter(message.author.tag, message.author.displayAvatarURL())
-                .setTimestamp();
-
-            return message.channel.send(embed);
+                    ${songInfo}`));
         } else {
             return message.channel.send('No queue exists').then(m => m.delete({timeout: 5000}))
         }
