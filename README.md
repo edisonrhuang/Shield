@@ -6,3 +6,4 @@
 -->
 
 Shield is a multipurpose discord bot, created using the Discord.js library. Shield is still under development.
+
