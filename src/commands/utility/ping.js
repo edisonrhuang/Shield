@@ -1,8 +1,14 @@
-const commandStructure = require('../../utils/structures/commandStructure');
+const BaseCommand = require('../../structures/BaseCommand');
 
-module.exports = class ping extends commandStructure {
+module.exports = class PingCommand extends BaseCommand {
     constructor() {
-        super('ping', 'utility', []);
+        super({
+            name: 'ping',
+            category: 'utility',
+            aliases: null,
+            description: 'Returns the ping between the bot and user',
+            channel: 'bot-commands',
+        });
     }
 
     async run (client, message) {

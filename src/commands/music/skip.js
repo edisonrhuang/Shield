@@ -1,9 +1,15 @@
-const commandStructure = require('../../utils/structures/commandStructure');
-const { embed } = require('../../utils/functions');
+const BaseCommand = require('../../structures/BaseCommand');
+const { embed } = require('../../util/Util');
 
-module.exports = class skip extends commandStructure {
+module.exports = class SkipCommand extends BaseCommand {
     constructor() {
-        super('skip', 'music', []);
+        super({
+            name: 'skip',
+            category: 'music',
+            aliases: null,
+            description: 'Skips the current song',
+            channel: 'music-commands',
+        });
     }
 
     async run (client, message) {

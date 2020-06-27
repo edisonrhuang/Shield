@@ -1,6 +1,6 @@
-const eventStructure = require('../../utils/structures/eventStructure');
+const BaseEvent = require('../../structures/BaseEvent');
 
-module.exports = class disconnect extends eventStructure {
+module.exports = class DisconnectEvent extends BaseEvent {
     constructor() {
         super('disconnect');
     }

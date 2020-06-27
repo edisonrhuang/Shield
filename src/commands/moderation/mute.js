@@ -1,15 +1,20 @@
-const commandStructure = require('../../utils/structures/commandStructure');
-const { getUser, embed, noPermission } = require('../../utils/functions');
+const BaseCommand = require('../../structures/BaseCommand');
+const { getUser, embed } = require('../../util/Util');
 const { YELLOW } = require('../../config/hexColors');
 
-module.exports = class mute extends commandStructure {
+module.exports = class MuteCommand extends BaseCommand {
     constructor() {
-        super('mute', 'moderation', []);
+        super({
+            name: 'mute',
+            category: 'moderation',
+            aliases: null,
+            description: 'Mutes a user in the server',
+            args: '[user] (reason)',
+            userPermissions: ['MUTE_MEMBERS'],
+        });
     }
 
     async run (client, message, args) {
-        if (!message.member.hasPermission('MUTE_MEMBERS')) return noPermission(message);
-
         const user = getUser(message, args[0]);
         if (!user) return message.channel.send('Please enter a valid user').then(m => m.delete({timeout:5000}));
 
@@ -19,7 +24,7 @@ module.exports = class mute extends commandStructure {
         const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
         logChannel.send(
             embed(client, message, null, YELLOW)
-                .setAuthor(user.user.tag, user.user.displayAvatarURL())
+                .setAuthor(user.user.tag, user.user.displayAvatarURL({ dynamic: true }))
                 .setDescription(`
                 **Action:** Mute
                 **User:** ${user.user.tag} (${user.user.id})
@@ -43,8 +48,7 @@ module.exports = class mute extends commandStructure {
                     }])
                 })
             } catch (err) {
-                message.channel.send(`There was an error while unmuting ${user.user.tag}`);
-                return console.log(err);
+                return message.channel.send(`An error occurred while unmuting ${user.user.tag}`);
             }
         }
 

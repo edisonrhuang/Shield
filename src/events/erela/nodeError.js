@@ -1,6 +1,6 @@
-const eventStructure = require('../../utils/structures/eventStructure');
+const BaseEvent = require('../../structures/BaseEvent');
 
-module.exports = class nodeError extends eventStructure {
+module.exports = class NodeErrorEvent extends BaseEvent {
     constructor() {
         super('nodeError');
     }

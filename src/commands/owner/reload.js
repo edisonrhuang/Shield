@@ -1,8 +1,14 @@
-const commandStructure = require('../../utils/structures/commandStructure');
+const BaseCommand = require('../../structures/BaseCommand');
 
-module.exports = class reload extends commandStructure {
+module.exports = class ReloadCommand extends BaseCommand {
     constructor() {
-        super('reload', 'owner', ['reset', 'reload']);
+        super({
+            name: 'reload',
+            category: 'owner',
+            aliases: ['reset'],
+            description: 'Reloads a command\'s cache',
+            args: '[command]'
+        });
     }
 
     run (client, message, args) {
@@ -19,8 +25,7 @@ module.exports = class reload extends commandStructure {
             client.commands.set(name, command);
             return message.channel.send(`Reloaded the \`${name}\` command`);
         } catch (err) {
-            message.channel.send(`Error: ${err}`).then(m => m.delete({timeout:10000}));
-            return console.log(err);
+            return message.channel.send(`Error: ${err}`).then(m => m.delete({timeout:10000}));
         }
     }
 }

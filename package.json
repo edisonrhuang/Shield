@@ -1,12 +1,12 @@
 {
   "name": "shield",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/bot.js",
-    "start": "node ./src/bot.js",
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
     "lavalink": "java -jar Lavalink.jar"
   },
   "author": "",

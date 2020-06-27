@@ -1,11 +1,11 @@
-const evenStructure = require('../../utils/structures/eventStructure');
+const BaseEvent = require('../../structures/BaseEvent');
 
-module.exports = class nodeConnect extends evenStructure {
+module.exports = class NodeConnectEvent extends BaseEvent {
     constructor() {
         super('nodeConnect');
     }
 
-    run (client, node) {
+    run () {
         return console.log('Node: Connected')
     }
 };

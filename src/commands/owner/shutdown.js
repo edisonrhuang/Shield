@@ -1,8 +1,13 @@
-const commandStructure = require('../../utils/structures/commandStructure');
+const BaseCommand = require('../../structures/BaseCommand');
 
-module.exports = class shutdown extends commandStructure {
+module.exports = class ShutdownCommand extends BaseCommand {
     constructor() {
-        super('shutdown', 'owner', []);
+        super({
+            name: 'shutdown',
+            category: 'owner',
+            aliases: null,
+            description: 'Shuts down the bot',
+        });
     }
 
     async run (client, message) {
@@ -11,8 +16,7 @@ module.exports = class shutdown extends commandStructure {
             await message.channel.send('Shutting Down...');
             return process.exit();
         } catch (err) {
-            message.channel.send(`Error: ${err}`).then(m => m.delete({timeout:10000}));
-            return console.log(err);
+            return message.channel.send(`Error: ${err}`).then(m => m.delete({timeout:10000}));
         }
     }
 };

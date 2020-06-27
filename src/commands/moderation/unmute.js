@@ -1,15 +1,20 @@
-const commandStructure = require('../../utils/structures/commandStructure');
-const { getUser, embed, noPermission } = require('../../utils/functions');
-const { GREEN } = require('../../config/hexColors');
+const BaseCommand = require('../../structures/BaseCommand');
+const { getUser, embed } = require('../../util/Util');
+const { LIGHT_GREEN } = require('../../config/hexColors');
 
-module.exports = class unmute extends commandStructure {
+module.exports = class UnmuteCommand extends BaseCommand {
     constructor() {
-        super('unmute', 'moderation', []);
+        super({
+            name: 'unmute',
+            category: 'moderation',
+            aliases: null,
+            description: 'Unmutes a user in the server',
+            args: '[user] (reason)',
+            userPermissions: ['MUTE_MEMBERS'],
+        });
     }
 
     async run (client, message, args) {
-        if (!message.member.hasPermission('MUTE_MEMBERS')) return noPermission(message);
-
         const user = getUser(message, args[0]);
         if (!user) return message.channel.send('Please enter a valid user').then(m => m.delete({timeout:5000}));
 
@@ -18,8 +23,8 @@ module.exports = class unmute extends commandStructure {
 
         const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
         logChannel.send(
-            embed(client, message, null, GREEN)
-                .setAuthor(user.user.tag, user.user.displayAvatarURL())
+            embed(client, message, null, LIGHT_GREEN)
+                .setAuthor(user.user.tag, user.user.displayAvatarURL({ dynamic: true }))
                 .setDescription(`
                 **Action:** Unmute
                 **User:** ${user.user.tag} (${user.user.id})

@@ -1,9 +1,15 @@
-const commandStructure = require('../../utils/structures/commandStructure');
-const { embed } = require('../../utils/functions');
+const BaseCommand = require('../../structures/BaseCommand');
+const { embed } = require('../../util/Util');
 
-module.exports = class shuffle extends commandStructure {
+module.exports = class ShuffleCommand extends BaseCommand {
     constructor() {
-        super('shuffle', 'music', ['shufflequeue']);
+        super({
+            name: 'shuffle',
+            category: 'music',
+            aliases: ['shufflequeue'],
+            description: 'Shuffles the current player\'s queue',
+            channel: 'music-commands',
+        });
     }
 
     async run (client, message) {

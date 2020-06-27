@@ -1,11 +1,11 @@
-const eventStructure = require('../../utils/structures/eventStructure');
+const BaseEvent = require('../../structures/BaseEvent');
 
-module.exports = class trackStart extends eventStructure {
+module.exports = class TrackStartEvent extends BaseEvent {
     constructor() {
         super('trackStart');
     }
 
-    run (client, player, track) {
+    run (player, track) {
         return player.textChannel.send(`Now Playing: ${track.title}`);
     }
 };

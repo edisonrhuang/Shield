@@ -1,10 +1,16 @@
-const commandStructure = require('../../utils/structures/commandStructure');
-const { getUser, embed } = require('../../utils/functions');
+const BaseCommand = require('../../structures/BaseCommand');
+const { getUser, embed } = require('../../util/Util');
 const { YELLOW } = require('../../config/hexColors');
 
-module.exports = class report extends commandStructure {
+module.exports = class ReportCommand extends BaseCommand {
     constructor() {
-        super('report', 'moderation', []);
+        super({
+            name: 'report',
+            category: 'moderation',
+            aliases: null,
+            description: 'Reports a user in the server',
+            args: '[user] [reason]',
+        });
     }
 
     async run (client, message, args) {
@@ -21,7 +27,7 @@ module.exports = class report extends commandStructure {
 
         reportChannel.send(
             embed(client, message, null, YELLOW)
-                .setAuthor(user.user.tag, user.user.displayAvatarURL())
+                .setAuthor(user.user.tag, user.user.displayAvatarURL({ dynamic: true }))
                 .setDescription(`
                 **Action:** Report
                 **User:** ${user.user.tag} ${user.user.id}

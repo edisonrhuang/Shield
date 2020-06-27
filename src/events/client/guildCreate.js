@@ -1,10 +1,10 @@
-const eventStructure = require('../../utils/structures/eventStructure');
-const stateManager = require('../../utils/stateManager');
+const BaseEvent = require('../../structures/BaseEvent');
+const StateManager = require('../../util/StateManager');
 
-module.exports = class guildCreate extends eventStructure {
+module.exports = class GuildCreateEvent extends BaseEvent {
     constructor() {
         super('guildCreate');
-        this.connection = stateManager.connection;
+        this.connection = StateManager.connection;
     }
 
     async run (client, guild) {

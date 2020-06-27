@@ -1,12 +1,18 @@
-const commandStructure = require('../../utils/structures/commandStructure');
-const { embed } = require('../../utils/functions');
+const BaseCommand = require('../../structures/BaseCommand');
+const { embed } = require('../../util/Util');
 
-module.exports = class leave extends commandStructure {
+module.exports = class LeaveCommand extends BaseCommand {
     constructor() {
-        super('leave', 'music', []);
+        super({
+            name: 'leave',
+            category: 'music',
+            aliases: null,
+            description: 'Disconnects from the voice channel',
+            channel: 'music-commands',
+        });
     }
 
-    async run (client, message, args) {
+    async run (client, message) {
         await message.delete();
 
         const { id } = message.guild;

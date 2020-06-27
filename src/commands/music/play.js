@@ -1,9 +1,16 @@
-const commandStructure = require('../../utils/structures/commandStructure');
-const { embed } = require('../../utils/functions');
+const BaseCommand = require('../../structures/BaseCommand');
+const { embed } = require('../../util/Util');
 
-module.exports = class play extends commandStructure {
+module.exports = class PlayCommand extends BaseCommand {
     constructor() {
-        super('play', 'music', []);
+        super({
+            name: 'play',
+            category: 'music',
+            aliases: ['p'],
+            description: 'Searches and displays music and plays it',
+            channel: 'music-commands',
+            args: '[query]',
+        });
     }
 
     async run (client, message, args) {
@@ -42,8 +49,7 @@ module.exports = class play extends commandStructure {
                     if (!player.playing) return player.play();
                 }
             } catch (err) {
-                message.channel.send('There was an error searching for a song').then(m => m.delete({timeout: 5000}));
-                return console.log(err)
+                return message.channel.send(`An error occurred while searching for the song: ${err}`).then(m => m.delete({timeout: 5000}));
             }
         } else {
             return message.channel.send('You are not in a voice channel').then(m => m.delete({timeout: 5000}));

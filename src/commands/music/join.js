@@ -1,12 +1,18 @@
-const commandStructure = require('../../utils/structures/commandStructure');
-const { embed } = require('../../utils/functions');
+const BaseCommand = require('../../structures/BaseCommand');
+const { embed } = require('../../util/Util');
 
-module.exports = class join extends commandStructure {
+module.exports = class JoinCommand extends BaseCommand {
     constructor() {
-        super('join', 'music', []);
+        super({
+            name: 'join',
+            category: 'music',
+            aliases: null,
+            description: 'Connects to a voice channel',
+            channel: 'music-commands',
+        });
     }
 
-    async run (client, message, args) {
+    async run (client, message) {
         await message.delete();
         const { channel } = message.member.voice;
 

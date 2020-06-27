@@ -1,18 +1,18 @@
-const eventStructure = require('../../utils/structures/eventStructure');
-const stateManager = require('../../utils/stateManager');
+const BaseEvent = require('../../structures/BaseEvent');
+const StateManager = require('../../util/StateManager');
 const guildPrefixes = new Map();
 
-module.exports = class ready extends eventStructure {
+module.exports = class ReadyEvent extends BaseEvent {
     constructor() {
         super('ready');
-        this.connection = stateManager.connection;
+        this.connection = StateManager.connection;
     }
 
     run(client) {
         client.guilds.cache.forEach(guild => {
             this.connection.query(`select prefix from config where guildID = '${guild.id}'`).then(result => {
                 guildPrefixes.set(guild.id, result[0][0].prefix);
-                stateManager.emit('fetchedPrefix', guild.id, result[0][0].prefix);
+                StateManager.emit('fetchedPrefix', guild.id, result[0][0].prefix);
             }).catch(err => console.log(err));
         });
 

@@ -1,12 +1,18 @@
-const commandStructure = require('../../utils/structures/commandStructure');
-const { embed } = require('../../utils/functions');
+const BaseCommand = require('../../structures/BaseCommand');
+const { embed } = require('../../util/Util');
 
-module.exports = class queue extends commandStructure {
+module.exports = class QueueCommand extends BaseCommand {
     constructor() {
-        super('queue', 'music', []);
+        super({
+            name: 'queue',
+            category: 'music',
+            aliases: null,
+            description: 'Displays the current player\'s queue',
+            channel: 'music-commands',
+        });
     }
 
-    async run (client, message, args) {
+    async run (client, message) {
         await message.delete();
 
         const player = client.music.players.get(message.guild.id);
