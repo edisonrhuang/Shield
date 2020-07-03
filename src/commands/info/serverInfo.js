@@ -1,5 +1,7 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { embed, formatDate } = require('../../util/Util');
+const { DEFAULT } = require('../../config/hexColors.json');
+const { formatDate } = require('../../util/Util');
+const { MessageEmbed } = require('discord.js')
 
 const verificationLevels = {NONE: 'None', LOW: 'Low', MEDIUM: 'Medium', HIGH: 'High', VERY_HIGH: 'Very High'};
 
@@ -32,16 +34,15 @@ module.exports = class ServerInfoCommand extends BaseCommand {
     }
 
     async run (client, message) {
-        await message.delete();
-
         const members = message.guild.members.cache;
         const channels = message.guild.channels.cache;
         const roles = message.guild.roles.cache;
         const emojis = message.guild.emojis.cache;
 
         return message.channel.send(
-            embed(client, message)
-                .setAuthor(`${message.guild.name} Info`, message.guild.iconURL())
+            new MessageEmbed()
+                .setColor(DEFAULT)
+                .setTitle(`${message.guild.name} Info`)
                 .setThumbnail(message.guild.iconURL({ dynamic: true }))
                 .addField('General Info', [
                     `**Name:** ${message.guild.name}`,

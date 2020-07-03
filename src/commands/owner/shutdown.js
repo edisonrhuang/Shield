@@ -7,6 +7,7 @@ module.exports = class ShutdownCommand extends BaseCommand {
             category: 'owner',
             aliases: null,
             description: 'Shuts down the bot',
+            userPermissions: ['BOT_OWNER'],
         });
     }
 

@@ -1,6 +1,7 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { getUser, embed } = require('../../util/Util');
+const { getUser } = require('../../util/Util');
 const { ORANGE } = require('../../config/hexColors');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class KickCommand extends BaseCommand {
     constructor() {
@@ -23,12 +24,15 @@ module.exports = class KickCommand extends BaseCommand {
 
         const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
         logChannel.send(
-            embed(client, message, null, ORANGE)
-                .setAuthor(user.user.tag, user.user.displayAvatarURL({ dynamic: true }))
+            new MessageEmbed()
+                .setColor(ORANGE)
+                .setAuthor(user.user.tag, user.user.displayAvatarURL())
                 .setDescription(`
                 **Action:** Kick
                 **User:** ${user.user.tag} (${user.user.id})
                 **Reason:** ${reason}`)
+                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setTimestamp()
         )
 
         message.channel.send(`${user.user.tag} has been kicked`)

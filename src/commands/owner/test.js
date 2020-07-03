@@ -7,6 +7,7 @@ module.exports = class TestCommand extends BaseCommand {
             category: 'owner',
             aliases: null,
             description: 'Test command',
+            userPermissions: ['BOT_OWNER'],
         });
     }
 

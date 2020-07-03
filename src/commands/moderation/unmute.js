@@ -1,6 +1,7 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { getUser, embed } = require('../../util/Util');
+const { getUser } = require('../../util/Util');
 const { LIGHT_GREEN } = require('../../config/hexColors');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class UnmuteCommand extends BaseCommand {
     constructor() {
@@ -23,12 +24,15 @@ module.exports = class UnmuteCommand extends BaseCommand {
 
         const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
         logChannel.send(
-            embed(client, message, null, LIGHT_GREEN)
-                .setAuthor(user.user.tag, user.user.displayAvatarURL({ dynamic: true }))
+            new MessageEmbed()
+                .setColor(LIGHT_GREEN)
+                .setAuthor(user.user.tag, user.user.displayAvatarURL())
                 .setDescription(`
                 **Action:** Unmute
                 **User:** ${user.user.tag} (${user.user.id})
                 **Reason:** ${reason}`)
+                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setTimestamp()
         )
 
         let muteRole = message.guild.roles.cache.find(r => r.name === 'Muted');

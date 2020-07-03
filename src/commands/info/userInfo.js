@@ -1,5 +1,7 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { getUser, embed, formatDate } = require('../../util/Util');
+const { DEFAULT } = require('../../config/hexColors.json');
+const { getUser, formatDate } = require('../../util/Util');
+const { MessageEmbed } = require('discord.js')
 
 const status = {
     online: 'Online',
@@ -37,15 +39,14 @@ module.exports = class UserInfoCommand extends BaseCommand {
     }
 
     async run (client, message, args) {
-        await message.delete();
-
         let userFlags;
 
         if (!args[0]) {
             userFlags = message.author.flags.toArray();
             return message.channel.send(
-                embed(client, message)
-                    .setAuthor(message.author.tag, message.author.displayAvatarURL())
+                new MessageEmbed()
+                    .setColor(DEFAULT)
+                    .setTitle(`${message.author.tag} Info`)
                     .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
                     .setDescription(`
                     **Username:** ${message.author.username}
@@ -67,8 +68,9 @@ module.exports = class UserInfoCommand extends BaseCommand {
         else userFlags = user.user.flags.toArray();
 
         return message.channel.send(
-            embed(client, message)
-                .setAuthor(user.user.tag, user.user.displayAvatarURL())
+            new MessageEmbed()
+                .setColor(DEFAULT)
+                .setTitle(`${user.user.tag} Info`)
                 .setThumbnail(user.user.displayAvatarURL({ dynamic: true }))
                 .setDescription(`
                 **Username:** ${user.user.username}

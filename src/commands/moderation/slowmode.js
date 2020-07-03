@@ -1,6 +1,6 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { embed } = require('../../util/Util');
 const { YELLOW } = require('../../config/hexColors');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class SlowModeCommand extends BaseCommand {
     constructor() {
@@ -16,7 +16,7 @@ module.exports = class SlowModeCommand extends BaseCommand {
 
     async run (client, message, args) {
         await message.delete();
-        
+
         const rate = args[0];
         let reason = args.slice(1).join(' ');
         if (!reason) reason = 'No Reason';
@@ -29,13 +29,16 @@ module.exports = class SlowModeCommand extends BaseCommand {
 
             const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
             return logChannel.send(
-                embed(client, message, null, YELLOW)
-                    .setAuthor(`Slow Mode`, client.user.displayAvatarURL({ dynamic: true }))
+                new MessageEmbed()
+                    .setColor(YELLOW)
+                    .setTitle(`Slow Mode`)
                     .setDescription(`
                     **Channel:** ${message.channel}
                     **Rate Limit:** ${rate} Seconds
                     **Reason:** ${reason}
                     `)
+                    .setFooter(message.author.tag, message.author.displayAvatarURL())
+                    .setTimestamp()
                 );
         }
     }

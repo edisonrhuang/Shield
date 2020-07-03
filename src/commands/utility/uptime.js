@@ -14,8 +14,6 @@ module.exports = class UptimeCommand extends BaseCommand {
     }
 
     async run(client, message) {
-        await message.delete();
-
         function duration(ms) {
             const sec = Math.floor(ms / 1000 % 60).toString();
             const min = Math.floor(ms / (1000 * 60) % 60).toString();
@@ -24,14 +22,12 @@ module.exports = class UptimeCommand extends BaseCommand {
 
             return new MessageEmbed()
                 .setColor(DEFAULT)
-                .setAuthor('Uptime', client.user.displayAvatarURL({dynamic: true}))
+                .setTitle('Uptime')
                 .setDescription(`
                 **Days:** ${days.padStart(1, '0')}
                 **Hours:** ${hrs.padStart(2, '0')}
                 **Minutes:** ${min.padStart(2, '0')}
                 **Seconds:** ${sec.padStart(2, '0')}`)
-                .setFooter(message.author.tag, message.author.displayAvatarURL())
-                .setTimestamp()
         }
 
         return message.channel.send(duration(client.uptime));

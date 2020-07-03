@@ -1,5 +1,6 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { embed } = require('../../util/Util');
+const { DEFAULT } = require('../../config/hexColors.json');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class PlayCommand extends BaseCommand {
     constructor() {
@@ -29,9 +30,12 @@ module.exports = class PlayCommand extends BaseCommand {
             const trackInfo = tracks.map((t, i = 0) => `${++i}) [${t.title}](${t.uri})`).join('\n');
 
             message.channel.send(
-                embed(client, message, 'Song Selection')
+                new MessageEmbed()
+                    .setColor(DEFAULT)
+                    .setTitle('Song Selection')
                     .setDescription(trackInfo)
-                    .setFooter('You have 10 seconds to make a selection', message.author.displayAvatarURL())).then(m => m.delete({timeout:5000}))
+                    .setFooter('You have 10 seconds to make a selection')
+                ).then(m => m.delete({timeout:5000}));
 
             const filter = m => (message.author.id === m.author.id) && (m.content >= 1 && m.content <= tracks.length);
 

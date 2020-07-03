@@ -1,5 +1,6 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { embed } = require('../../util/Util');
+const { DEFAULT } = require('../../config/hexColors.json');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class SkipCommand extends BaseCommand {
     constructor() {
@@ -33,7 +34,9 @@ module.exports = class SkipCommand extends BaseCommand {
                 const votesRequired = Math.ceil(members.size * .51);
 
                 const msg = await message.channel.send(
-                    embed(client, message, 'Skip Vote')
+                    new MessageEmbed()
+                        .setColor(DEFAULT)
+                        .setTitle('Skip Vote')
                         .setDescription(`Total votes needed: ${votesRequired}`));
 
                 await msg.react('✅');

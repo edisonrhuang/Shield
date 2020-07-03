@@ -1,6 +1,6 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { embed } = require('../../util/Util');
 const { YELLOW } = require('../../config/hexColors');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class PurgeCommand extends BaseCommand {
     constructor() {
@@ -15,8 +15,6 @@ module.exports = class PurgeCommand extends BaseCommand {
     }
 
     async run (client, message, args) {
-        await message.delete();
-
         if (!args[0]) return message.channel.send('Please provide the amount of messages to purge').then(m => m.delete({timeout:5000}));
 
         const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
@@ -25,8 +23,13 @@ module.exports = class PurgeCommand extends BaseCommand {
             message.channel.send(`**${args[0]}** messages deleted`).then(m => m.delete({timeout:5000}));
 
             return logChannel.send(
-                embed(client, message, 'Message Purged', YELLOW)
-                    .setDescription(`**${args[0]}** messages deleted from #${message.channel.name}`));
+                new MessageEmbed()
+                    .setColor(YELLOW)
+                    .setTitle('Messages Purged')
+                    .setDescription(`**${args[0]}** messages deleted from #${message.channel.name}`)
+                    .setFooter(message.author.tag, message.author.displayAvatarURL())
+                    .setTimestamp()
+            );
         }).catch(err => message.channel.send(err));
     }
 };

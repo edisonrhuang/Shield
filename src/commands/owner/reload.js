@@ -7,7 +7,8 @@ module.exports = class ReloadCommand extends BaseCommand {
             category: 'owner',
             aliases: ['reset'],
             description: 'Reloads a command\'s cache',
-            args: '[command]'
+            args: '[command]',
+            userPermissions: ['BOT_OWNER'],
         });
     }
 

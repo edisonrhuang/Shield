@@ -1,6 +1,6 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { embed } = require('../../util/Util');
-const { LIGHT_GREEN } = require('../../config/hexColors.json')
+const { LIGHT_GREEN } = require('../../config/hexColors.json');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class UnbanCommand extends BaseCommand {
     constructor() {
@@ -23,12 +23,15 @@ module.exports = class UnbanCommand extends BaseCommand {
 
         const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
         logChannel.send(
-            embed(client, message, null, LIGHT_GREEN)
-                .setAuthor(user.tag, user.displayAvatarURL({ dynamic: true }))
+            new MessageEmbed()
+                .setColor(LIGHT_GREEN)
+                .setAuthor(user.tag, user.displayAvatarURL())
                 .setDescription(`
                 **Action:** Unban
                 **User:** ${user.tag} (${user.id})
                 **Reason:** ${reason}`)
+                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setTimestamp()
         );
 
         message.channel.send(`${user} has been unbanned`)

@@ -1,6 +1,7 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { getUser, embed } = require('../../util/Util');
+const { getUser } = require('../../util/Util');
 const { RED } = require('../../config/hexColors.json')
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class BanCommand extends BaseCommand {
     constructor() {
@@ -23,12 +24,15 @@ module.exports = class BanCommand extends BaseCommand {
 
         const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
         logChannel.send(
-            embed(client, message, null, RED)
-                .setAuthor(user.user.tag, user.user.displayAvatarURL({ dynamic: true }))
+            new MessageEmbed()
+                .setColor(RED)
+                .setAuthor(user.user.tag, user.user.displayAvatarURL())
                 .setDescription(`
                 **Action:** Ban
                 **User:** ${user.user.tag} (${user.user.id})
                 **Reason:** ${reason}`)
+                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setTimestamp()
         );
 
         message.channel.send(`${user} has been banned`)

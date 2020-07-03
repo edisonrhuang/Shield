@@ -1,6 +1,7 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { getUser, embed } = require('../../util/Util');
+const { getUser } = require('../../util/Util');
 const { YELLOW } = require('../../config/hexColors');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class ReportCommand extends BaseCommand {
     constructor() {
@@ -14,8 +15,6 @@ module.exports = class ReportCommand extends BaseCommand {
     }
 
     async run (client, message, args) {
-        await message.delete();
-
         const user = getUser(message, args[0]);
         if (!user) return message.channel.send('Please enter a valid user').then(m => m.delete({timeout:5000}));
 
@@ -26,13 +25,16 @@ module.exports = class ReportCommand extends BaseCommand {
         if (!reportChannel) return missingChannel(client, message, 'reports');
 
         reportChannel.send(
-            embed(client, message, null, YELLOW)
-                .setAuthor(user.user.tag, user.user.displayAvatarURL({ dynamic: true }))
+            new MessageEmbed()
+                .setColor(YELLOW)
+                .setAuthor(user.user.tag, user.user.displayAvatarURL())
                 .setDescription(`
                 **Action:** Report
                 **User:** ${user.user.tag} ${user.user.id}
                 **Reason:** ${reason}
                 `)
+                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setTimestamp()
         ).then(async m => {
             await m.react('✅');
             await m.react('❌')
@@ -44,7 +46,9 @@ module.exports = class ReportCommand extends BaseCommand {
 
 function missingChannel (client, message, channel) {
     return message.channel.send(
-        embed(client, message, 'Missing Channel', YELLOW)
+        new MessageEmbed()
+            .setColor(YELLOW)
+            .setTitle('Missing Channel')
             .setDescription(`Please create a #${channel} channel for this command to function properly`)
-    )
+    ).then(m => m.delete({ timeout: 5000 }))
 }

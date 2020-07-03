@@ -1,5 +1,4 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { embed } = require('../../util/Util');
 
 module.exports = class LeaveCommand extends BaseCommand {
     constructor() {
@@ -13,8 +12,6 @@ module.exports = class LeaveCommand extends BaseCommand {
     }
 
     async run (client, message) {
-        await message.delete();
-
         const { id } = message.guild;
         const player = client.music.players.get(id);
         const { channel } = message.member.voice;
@@ -25,9 +22,7 @@ module.exports = class LeaveCommand extends BaseCommand {
             if (player.voiceChannel.id === channel.id) {
                 client.music.players.destroy(id);
 
-                return message.channel.send(
-                    embed(client, message)
-                        .setDescription(`Voice Channel Left: ${channel}`));
+                return message.channel.send(`Voice Channel Left: \`${channel.name}\``);
             }
             return message.channel.send(`You are not in the same voice channel as ${client.user.tag}`).then(m => m.delete({timeout: 5000}));
         }

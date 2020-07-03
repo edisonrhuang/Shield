@@ -1,8 +1,10 @@
 const BaseCommand = require('../../structures/BaseCommand');
 const StateManager = require('../../util/StateManager');
-const { embed, formatDate, uptime } = require('../../util/Util');
-const guildPrefixes = new Map();
+const { DEFAULT } = require('../../config/hexColors.json');
+const { formatDate, uptime } = require('../../util/Util');
+const { MessageEmbed } = require('discord.js');
 const os = require('os');
+const guildPrefixes = new Map();
 
 module.exports = class BotInfoCommand extends BaseCommand {
     constructor() {
@@ -17,10 +19,10 @@ module.exports = class BotInfoCommand extends BaseCommand {
     }
 
     async run (client, message) {
-        await message.delete();
-
         return message.channel.send(
-            embed(client, message, `${client.user.tag} Info`)
+            new MessageEmbed()
+                .setColor(DEFAULT)
+                .setTitle('Shield Dev Info')
                 .setThumbnail(client.user.displayAvatarURL())
                 .setDescription(`
                 **[Bot Invite](https://discord.com/api/oauth2/authorize?client_id=704489233057972324&permissions=8&scope=bot)**

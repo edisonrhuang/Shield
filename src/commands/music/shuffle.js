@@ -1,5 +1,4 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { embed } = require('../../util/Util');
 
 module.exports = class ShuffleCommand extends BaseCommand {
     constructor() {
@@ -13,8 +12,6 @@ module.exports = class ShuffleCommand extends BaseCommand {
     }
 
     async run (client, message) {
-        await message.delete();
-
         const { channel } = message.member.voice;
         const player = client.music.players.get(message.guild.id);
 
@@ -23,8 +20,7 @@ module.exports = class ShuffleCommand extends BaseCommand {
                 if (channel.id === player.voiceChannel.id) {
                     player.queue.shuffle();
 
-                    return message.channel.send(
-                        embed(client, message, 'Queue Shuffled'));
+                    return message.channel.send('Queue Shuffled');
                 }
                 return message.channel.send(`You are not in the same voice channel as ${client.user.tag}`).then(m => m.delete({timeout: 5000}));
             }

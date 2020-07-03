@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs').promises;
 const BaseCommand = require('../structures/BaseCommand');
 const BaseEvent = require('../structures/BaseEvent');
-const { DEFAULT, YELLOW } = require('../config/hexColors');
+const { YELLOW } = require('../config/hexColors');
 
 module.exports = class Util {
     static getUser (message, user = '') {
@@ -16,14 +16,6 @@ module.exports = class Util {
             })
         }
         return findUser;
-    }
-
-    static embed (client, message, title, color) {
-        return new MessageEmbed()
-            .setColor(color || DEFAULT)
-            .setAuthor(title || client.user.tag, client.user.displayAvatarURL())
-            .setFooter(message.author.tag, message.author.displayAvatarURL())
-            .setTimestamp();
     }
 
     static formatDate (date) {
@@ -40,14 +32,20 @@ module.exports = class Util {
     }
 
     static missingChannel (client, message, channel) {
-        return message.channel.send(this.embed(client, message, 'Missing Channel', YELLOW)
-            .setDescription(`Please create a #${channel} channel for this command to function properly`)
+        return message.channel.send(
+            new MessageEmbed()
+                .setColor(YELLOW)
+                .setTitle('Missing Channel')
+                .setDescription(`Please create a #${channel} channel for this command to function properly`)
         ).then(m => m.delete({ timeout: 5000 }))
     }
 
     static incorrectChannel (client, message, channel) {
-        return message.channel.send(this.embed(client, message, 'Incorrect Channel', YELLOW)
-            .setDescription(`Please use this command in ${channel}`)
+        return message.channel.send(
+            new MessageEmbed()
+                .setColor(YELLOW)
+                .setTitle('Incorrect Channel')
+                .setDescription(`Please use this command in ${channel}`)
         ).then(m => m.delete({ timeout: 5000 }))
     }
 

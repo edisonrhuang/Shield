@@ -1,6 +1,7 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { getUser, embed } = require('../../util/Util');
+const { getUser } = require('../../util/Util');
 const { YELLOW } = require('../../config/hexColors');
+const { MessageEmbed } = require('discord.js')
 
 module.exports = class MuteCommand extends BaseCommand {
     constructor() {
@@ -20,16 +21,6 @@ module.exports = class MuteCommand extends BaseCommand {
 
         let reason = args.slice(1).join(' ');
         if (!reason) reason = 'No Reason';
-
-        const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
-        logChannel.send(
-            embed(client, message, null, YELLOW)
-                .setAuthor(user.user.tag, user.user.displayAvatarURL({ dynamic: true }))
-                .setDescription(`
-                **Action:** Mute
-                **User:** ${user.user.tag} (${user.user.id})
-                **Reason:** ${reason}`)
-        );
 
         let muteRole = message.guild.roles.cache.find(r => r.name === 'Muted');
 
@@ -55,6 +46,19 @@ module.exports = class MuteCommand extends BaseCommand {
         user.roles.add(muteRole.id).then(
             user.send(`You have been muted in ${message.guild.name} by ${message.author.tag} for ${reason}`)
         )
+
+        const logChannel = message.guild.channels.cache.find(c => c.name === 'logs');
+        logChannel.send(
+            new MessageEmbed()
+                .setColor(YELLOW)
+                .setAuthor(user.user.tag, user.user.displayAvatarURL())
+                .setDescription(`
+                **Action:** Mute
+                **User:** ${user.user.tag} (${user.user.id})
+                **Reason:** ${reason}`)
+                .setFooter(message.author.tag, message.author.displayAvatarURL())
+                .setTimestamp()
+        );
 
         return message.channel.send(`${user.user.tag} has been muted`);
     }

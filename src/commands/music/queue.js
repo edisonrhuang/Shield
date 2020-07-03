@@ -1,5 +1,6 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { embed } = require('../../util/Util');
+const { DEFAULT } = require('../../config/hexColors.json');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class QueueCommand extends BaseCommand {
     constructor() {
@@ -13,15 +14,14 @@ module.exports = class QueueCommand extends BaseCommand {
     }
 
     async run (client, message) {
-        await message.delete();
-
         const player = client.music.players.get(message.guild.id);
         if (player) {
             const songs = player.queue.slice(1, 10);
             const songInfo = songs.map((s, i = 0) => `${++i}) [${s.title}](${s.uri})`).join('\n');
 
             return message.channel.send(
-                embed(client, message, 'Song Queue')
+                new MessageEmbed()
+                    .setColor(DEFAULT)
                     .setDescription(`Current Song: [${player.queue[0].title}](${player.queue[0].uri})
                 
                     ${songInfo}`));

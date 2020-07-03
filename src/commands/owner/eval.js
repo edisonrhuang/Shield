@@ -1,5 +1,6 @@
 const BaseCommand = require('../../structures/BaseCommand');
-const { embed } = require('../../util/Util');
+const { DEFAULT } = require('../../config/hexColors.json');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class EvalCommand extends BaseCommand {
     constructor() {
@@ -9,12 +10,11 @@ module.exports = class EvalCommand extends BaseCommand {
             aliases: null,
             description: 'Evaluates arbitrary javascript code',
             args: '[code]',
+            userPermissions: ['BOT_OWNER'],
         });
     }
 
     async run (client, message, args) {
-        await message.delete();
-
         if (!args[0]) return message.channel.send('Please enter a valid statement to execute').then(m => m.delete({timeout:5000}));
 
         const toEval = args.join(' ');
@@ -24,7 +24,9 @@ module.exports = class EvalCommand extends BaseCommand {
             const evaluated = eval(toEval);
 
             return message.channel.send(
-                embed(client, message, 'Eval Executed')
+                new MessageEmbed()
+                    .setColor(DEFAULT)
+                    .setTitle('Eval')
                     .setDescription(`
                     \`\`\`js\n${toEval}\n\`\`\`
                     Evaluated:
